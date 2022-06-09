@@ -1,11 +1,13 @@
 import React from 'react';
-import {Button, StyleSheet, View} from 'react-native';
+import {Button, StyleSheet, View, TouchableHighlight} from 'react-native';
 
 const ButtonComp = ({title, clickHandler}) => {
   return (
-    <View style={styles.buttonWrapper}>
-      <Button title={title} onPress={clickHandler} />
-    </View>
+    <TouchableOpacity onPress={clickHandler}>
+      <View style={styles.buttonWrapper}>
+        <Text>{title}</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 

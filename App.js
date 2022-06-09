@@ -16,7 +16,11 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         {screens.map(obj => (
-          <Stack.Screen name={obj.name} component={obj.component} />
+          <Stack.Screen
+            key={obj.name}
+            name={obj.name}
+            component={obj.component}
+          />
         ))}
       </Stack.Navigator>
     </NavigationContainer>

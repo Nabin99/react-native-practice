@@ -4,7 +4,7 @@ import ButtonComp from '../component/Button/Button';
 import Header from '../component/Header.js/Header';
 import Input from '../component/Input/Input';
 
-const Login = () => {
+const Login = ({navigation}) => {
   const [email, emailSet] = useState('');
   const [password, passwordSet] = useState('');
   const [showInput, showInputSet] = useState(false);
@@ -31,6 +31,7 @@ const Login = () => {
           title={'Login'}
           clickHandler={() => {
             showInputSet(true);
+            navigation.navigate('Dashboard');
           }}
         />
         {showInput && (
