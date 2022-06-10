@@ -1,16 +1,56 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, ScrollView, Text} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 import ButtonComp from '../component/Button/Button';
-import Header from '../component/Header.js/Header';
+import Header from '../component/Header/Header';
 import Input from '../component/Input/Input';
+import {useLoginMutation} from '../services/loginApi';
+import {addUser} from '../store/slices/userSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({navigation}) => {
   const [email, emailSet] = useState('');
   const [password, passwordSet] = useState('');
-  const [showInput, showInputSet] = useState(false);
+  const isLoggedIn = useSelector(state => state.userDetails.isLoggedIn);
+  const dispatch = useDispatch();
+  const [login] = useLoginMutation();
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigation.navigate('Dashboard');
+    } else {
+      (async () => {
+        try {
+          const user = JSON.parse(await AsyncStorage.getItem('user'));
+          console.log(user);
+          if (user) dispatch(addUser({...user}));
+        } catch (error) {
+          console.log(error);
+        }
+      })();
+    }
+  }, [isLoggedIn]);
+
+  const loginHandler = async () => {
+    let temp = await login({email, password});
+    temp.error && console.log(temp.error);
+    if (temp.data) {
+      (async () => {
+        try {
+          await AsyncStorage.setItem(
+            'user',
+            JSON.stringify(temp.data.payload.data),
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      })();
+      dispatch(addUser({...temp.data.payload.data}));
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
-      <Header />
+      <Header heading={'React Native Form'} />
       <View style={styles.formContainer}>
         <Input
           password={false}
@@ -30,16 +70,9 @@ const Login = ({navigation}) => {
         <ButtonComp
           title={'Login'}
           clickHandler={() => {
-            showInputSet(true);
-            navigation.navigate('Dashboard');
+            loginHandler();
           }}
         />
-        {showInput && (
-          <View style={styles.output}>
-            <Text style={styles.text}>Email:- {email}</Text>
-            <Text style={styles.text}>Password:- {password}</Text>
-          </View>
-        )}
       </View>
     </ScrollView>
   );
