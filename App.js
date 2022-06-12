@@ -25,6 +25,7 @@ const App = () => {
               key={obj.name}
               name={obj.name}
               component={obj.component}
+              options={{headerShown: obj.showHeader}}
             />
           ))}
         </Stack.Navigator>

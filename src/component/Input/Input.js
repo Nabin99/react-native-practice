@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {stylesConstant} from '../../styles/abstracts/abstracts';
 
 const Input = ({
   value,
@@ -17,7 +18,7 @@ const Input = ({
         style={focus ? {...styles.input, ...styles.inputFocused} : styles.input}
         onChangeText={val => setValue(val)}
         placeholder={placeholder}
-        placeholderTextColor="blue"
+        placeholderTextColor={stylesConstant.color.primaryColor}
         secureTextEntry={password}
         autoFocus={autoFocus}
         onFocus={() => focusSet(true)}
@@ -43,16 +44,16 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 10,
     borderWidth: 1,
-    borderColor: 'grey',
+    borderColor: stylesConstant.color.inActiveColor,
     borderStyle: 'solid',
-    color: 'blue',
+    color: stylesConstant.color.primaryColor,
     borderRadius: 10,
   },
   inputFocused: {
-    borderColor: 'blue',
+    borderColor: stylesConstant.color.borderColorDefault,
   },
   label: {
     fontSize: 24,
-    color: 'blue',
+    color: stylesConstant.color.primaryColor,
   },
 });
